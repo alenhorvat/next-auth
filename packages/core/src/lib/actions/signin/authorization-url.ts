@@ -98,7 +98,8 @@ export async function getAuthorizationUrl(
     }
   }
 
-  const nonce = await checks.nonce.create(options)
+  // AH: add the null param
+  const nonce = await checks.nonce.create(options, null)
   if (nonce) {
     authParams.set("nonce", nonce.value)
     cookies.push(nonce.cookie)

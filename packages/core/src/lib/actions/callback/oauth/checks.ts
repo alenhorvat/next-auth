@@ -188,10 +188,14 @@ export const state = {
   },
 }
 
+// AH: add resParams and passkeyId to the nonce
 export const nonce = {
-  async create(options: InternalOptions<"oidc">) {
+  async create(options: InternalOptions<"oidc">, resParams: o.AuthorizationParameters) {
     if (!options.provider.checks.includes("nonce")) return
-    const value = o.generateRandomNonce()
+    let value = o.generateRandomNonce()
+    if (resParams.passkeyId) {
+      value = resParams.passkeyId + ":" + value
+    } 
     const cookie = await sealCookie("nonce", value, options)
     return { cookie, value }
   },
